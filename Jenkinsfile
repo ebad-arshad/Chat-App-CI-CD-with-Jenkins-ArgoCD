@@ -68,29 +68,44 @@ pipeline {
                 echo 'Pushed image to Dockerhub'
             }
         }
-        // stage('Update K8s Manifests in GitHub') {
-        //     steps {
-        //         script {
-                    
-        //             // Commit and push to GitHub
-        //             withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-        //                 sh """
-        //                     git config user.email "m.ebadarshad2003@gmail.com"
-        //                     git config user.name "ebad-arshad"
-        //                     cd k8s
-        //                     sed -i 's|ebadarshad/school-frontend:[^ ]*|ebadarshad/school-frontend:${env.IMAGE_TAG}|g' deployment.yaml
-        //                     sed -i 's|ebadarshad/school-backend:[^ ]*|ebadarshad/school-backend:${env.IMAGE_TAG}|g' deployment.yaml
-        //                     git add deployment.yaml
-        //                     if git diff --cached --quiet; then
-        //                         echo "No changes to commit"
-        //                     else
-        //                         git commit -m "ci: update image tags to ${env.IMAGE_TAG}"
-        //                         git push https://${GIT_TOKEN}@github.com/ebad-arshad/MERN-School-Management-System.git
-        //                     fi
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Update Helm Manifests of k8s') {
+            agent {
+                docker {
+                    image 'alpine/yq:4'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                }
+            }
+            steps {
+                script {
+                    sh """
+                    cd k8s-helm
+                    yq eval '.chat-backend.image.tag = \"${env.IMAGE_TAG}\"' -i values.yaml
+                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\"' -i values.yaml
+                    """
+                    sh 'cat values.yaml'
+                }
+            }
+        }
+        stage('Push Helm Manifests of k8s on GitHub') {
+            steps {
+                script {
+                    // Commit and push to GitHub
+                    withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        sh """
+                            git config user.email "m.ebadarshad2003@gmail.com"
+                            git config user.name "ebad-arshad"
+                            cd k8s-helm
+                            git add values.yaml
+                            if git diff --cached --quiet; then
+                                echo "No changes to commit"
+                            else
+                                git commit -m "ci: update image tags to ${env.IMAGE_TAG}"
+                                git push https://${GIT_TOKEN}@github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git
+                            fi
+                        """
+                    }
+                }
+            }
+        }
     }
 }
