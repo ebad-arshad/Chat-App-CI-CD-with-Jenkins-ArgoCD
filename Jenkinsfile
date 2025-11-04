@@ -82,19 +82,20 @@ pipeline {
             steps {
                 script {
                     // Commit and push to GitHub
-                    withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                        sh """
-                            git config user.email "m.ebadarshad2003@gmail.com"
-                            git config user.name "ebad-arshad"
-                            git add values.yaml
-                            if git diff --cached --quiet; then
-                                echo "No changes to commit"
-                            else
-                                git commit -m "ci: update image tags to ${env.IMAGE_TAG}"
-                                git push https://${GIT_TOKEN}@github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git
-                            fi
-                        """
-                    }
+                    sh "git status"
+                    // withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                    //     sh """
+                    //         git config user.email "m.ebadarshad2003@gmail.com"
+                    //         git config user.name "ebad-arshad"
+                    //         git add values.yaml
+                    //         if git diff --cached --quiet; then
+                    //             echo "No changes to commit"
+                    //         else
+                    //             git commit -m "ci: update image tags to ${env.IMAGE_TAG}"
+                    //             git push https://${GIT_TOKEN}@github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git
+                    //         fi
+                    //     """
+                    // }
                 }
             }
         }
