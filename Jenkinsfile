@@ -69,12 +69,6 @@ pipeline {
             }
         }
         stage('Update Helm Manifests of k8s') {
-            agent {
-                docker {
-                    image 'alpine/yq:4'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 script {
                     sh """
