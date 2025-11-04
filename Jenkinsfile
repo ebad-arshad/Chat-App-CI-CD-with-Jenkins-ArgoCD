@@ -86,7 +86,7 @@ pipeline {
                         sh """
                             git config user.email "m.ebadarshad2003@gmail.com"
                             git config user.name "ebad-arshad"
-                            git add values.yaml
+                            git add k8s-helm/values.yaml
                             if git diff --cached --quiet; then
                                 echo "No changes to commit"
                             else
