@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chat-application
+  namespace: argocd
+spec:
+  project: chat-project
+  source:
+    repoURL: https://github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git
+    targetRevision: k8s-helm
+    path: .
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: chat
+  syncPolicy:
+    automated:
+      prune: true       # delete removed manifests
+      selfHeal: true    # fix drift automatically
+    syncOptions:
+      - CreateNamespace=true
