@@ -72,11 +72,10 @@ pipeline {
             steps {
                 script {
                     sh """
-                    cd k8s-helm
-                    yq eval '.chat-backend.image.tag = \"${env.IMAGE_TAG}\"' -i values.yaml
-                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\"' -i values.yaml
+                    yq eval '.chat-backend.image.tag = \"${env.IMAGE_TAG}\"' k8s-helm/values.yaml
+                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\"' k8s-helm/values.yaml
                     """
-                    sh 'cat values.yaml'
+                    sh 'cat k8s-helm/values.yaml'
                 }
             }
         }
@@ -88,7 +87,6 @@ pipeline {
                         sh """
                             git config user.email "m.ebadarshad2003@gmail.com"
                             git config user.name "ebad-arshad"
-                            cd k8s-helm
                             git add values.yaml
                             if git diff --cached --quiet; then
                                 echo "No changes to commit"
