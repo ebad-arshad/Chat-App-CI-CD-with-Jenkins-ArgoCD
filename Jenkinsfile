@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\" | .chat-backend.image.tag = \"${env.IMAGE_TAG}\" ' k8s-helm/values.yaml
+                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\" | .chat-backend.image.tag = \"${env.IMAGE_TAG}\" ' -i k8s-helm/values.yaml
                     """
                     sh 'cat k8s-helm/values.yaml'
                 }
@@ -82,20 +82,19 @@ pipeline {
             steps {
                 script {
                     // Commit and push to GitHub
-                    sh "git status"
-                    // withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                    //     sh """
-                    //         git config user.email "m.ebadarshad2003@gmail.com"
-                    //         git config user.name "ebad-arshad"
-                    //         git add values.yaml
-                    //         if git diff --cached --quiet; then
-                    //             echo "No changes to commit"
-                    //         else
-                    //             git commit -m "ci: update image tags to ${env.IMAGE_TAG}"
-                    //             git push https://${GIT_TOKEN}@github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git
-                    //         fi
-                    //     """
-                    // }
+                    withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                        sh """
+                            git config user.email "m.ebadarshad2003@gmail.com"
+                            git config user.name "ebad-arshad"
+                            git add values.yaml
+                            if git diff --cached --quiet; then
+                                echo "No changes to commit"
+                            else
+                                git commit -m "ci: update image tags to ${env.IMAGE_TAG}"
+                                git push https://${GIT_TOKEN}@github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git
+                            fi
+                        """
+                    }
                 }
             }
         }
