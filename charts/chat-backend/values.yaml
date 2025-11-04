@@ -1,0 +1,35 @@
+fullnameOverride: chat-backend
+
+replicaCount: 1
+image:
+  repository: ebadarshad/chat-backend
+  pullPolicy: IfNotPresent
+  tag: "latest"
+podLabels: {app: "chat-backend"}
+service:
+  type: ClusterIP
+  port: 3000
+auth:
+  database: db-secret
+  jwt: jwt-secret
+  resend: resend-secret
+  cloudinary: cloudinary-secret
+  arcjet: arcjet-secret
+
+livenessProbe:
+  enabled: true  
+  tcpSocket:
+    port: 3000
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  enabled: true  
+  tcpSocket:
+    port: 3000
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 5
+  failureThreshold: 3

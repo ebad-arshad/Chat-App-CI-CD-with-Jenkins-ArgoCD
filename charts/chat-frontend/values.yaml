@@ -1,0 +1,12 @@
+fullnameOverride: chat-frontend
+
+replicaCount: 1
+image:
+  repository: ebadarshad/chat-frontend
+  pullPolicy: IfNotPresent
+  tag: "latest"
+podLabels: {app: "chat-frontend"}
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80

@@ -1,0 +1,17 @@
+apiVersion: v2
+name: chat-app
+description: A Helm umbrella chart for the Chat Application
+type: application
+version: 0.1.0
+appVersion: "1.0"
+
+dependencies:
+  - name: mongo
+    version: 0.1.0
+    repository: "file://charts/mongo"
+  - name: chat-backend
+    version: 0.1.0
+    repository: "file://charts/chat-backend"
+  - name: chat-frontend
+    version: 0.1.0
+    repository: "file://charts/chat-frontend"

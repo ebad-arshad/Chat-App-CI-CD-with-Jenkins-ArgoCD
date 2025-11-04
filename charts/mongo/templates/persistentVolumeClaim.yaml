@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistentVolumeClaim.name }}
+  labels:
+    {{- include "mongo.labels" . | nindent 4 }}
+spec:
+  {{- with .Values.persistentVolumeClaim.accessModes }}
+  accessModes: 
+    {{- toYaml . | nindent 12 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolumeClaim.resources.requests.storage }}
+  storageClassName: {{ .Values.persistentVolumeClaim.storageClassName }}

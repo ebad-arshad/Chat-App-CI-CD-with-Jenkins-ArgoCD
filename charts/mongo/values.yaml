@@ -1,0 +1,71 @@
+fullnameOverride: mongo
+
+replicaCount: 1
+image:
+  repository: mongo
+  pullPolicy: IfNotPresent
+  tag: "8"
+
+auth:
+  name: database
+
+podLabels: { app: mongo }
+
+service:
+  type: ClusterIP
+  port: 27017
+  clusterIP: None
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 640Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+livenessProbe:
+  enabled: true  
+  tcpSocket:
+    port: 27017
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  enabled: true  
+  tcpSocket:
+    port: 27017
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+volumes:
+- name: mongo-storage
+  persistentVolumeClaim:
+    claimName: mongo-pvc
+
+volumeMounts:
+- name: mongo-storage
+  mountPath: "/data/db"
+
+persistentVolume:
+  storage: 1Gi
+  reclaimPolicy: Retain
+  accessModes: 
+  - "ReadWriteOnce"
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: standard
+  hostPath:
+    path: "/mnt/data"
+
+persistentVolumeClaim:
+  name: mongo-pvc
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
