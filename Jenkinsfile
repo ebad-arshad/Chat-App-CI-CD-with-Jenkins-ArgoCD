@@ -72,8 +72,7 @@ pipeline {
             steps {
                 script {
                     sh """
-                    yq eval '.chat-backend.image.tag = \"${env.IMAGE_TAG}\"' k8s-helm/values.yaml
-                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\"' k8s-helm/values.yaml
+                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\"' | .chat-backend.image.tag = \"${env.IMAGE_TAG}\"' k8s-helm/values.yaml
                     """
                     sh 'cat k8s-helm/values.yaml'
                 }
