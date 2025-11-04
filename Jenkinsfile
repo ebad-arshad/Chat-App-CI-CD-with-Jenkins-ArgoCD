@@ -28,7 +28,7 @@ pipeline {
         stage('Clone') {
             steps {
                 script {
-                    sh "rm -rf main k8s-helm"
+                    sh "rm -rf *"
 
                     clone('https://github.com/ebad-arshad/Chat-App-CI-CD-with-Jenkins-ArgoCD.git', 'main')
                     // git clone -b <branch> <repo> <branch>
