@@ -45,12 +45,12 @@ spec:
           {{- end }}
 
           env:
-          - name: MONGO_URL
+          - name: MONGO_URI
             valueFrom:
               secretKeyRef:
                 name: {{ .Values.auth.database }}
                 key: url
-                
+
           - name: JWT_SECRET
             valueFrom:
               secretKeyRef:
