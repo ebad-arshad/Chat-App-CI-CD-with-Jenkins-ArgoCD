@@ -3,6 +3,7 @@ mongo:
     repository: mongo
     tag: "8"
   replicaCount: 1
+  revisionHistoryLimit: 1
   service:
     port: 27017
 chat-backend:
@@ -10,6 +11,7 @@ chat-backend:
     repository: ebadarshad/chat-backend
     tag: "0.15"
   replicaCount: 2
+  revisionHistoryLimit: 1
   service:
     port: 3000
 chat-frontend:
@@ -17,6 +19,7 @@ chat-frontend:
     repository: ebadarshad/chat-frontend
     tag: "0.15"
   replicaCount: 2
+  revisionHistoryLimit: 1
   service:
     port: 80
     targetPort: 80

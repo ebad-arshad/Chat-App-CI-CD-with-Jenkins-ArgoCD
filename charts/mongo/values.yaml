@@ -1,5 +1,4 @@
 fullnameOverride: mongo
-
 replicaCount: 1
 image:
   repository: mongo
