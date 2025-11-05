@@ -10,7 +10,7 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
-  console.log("chal rha hai")
+
   useEffect(() => {
     if (location.pathname == "/") {
     checkAuth();
