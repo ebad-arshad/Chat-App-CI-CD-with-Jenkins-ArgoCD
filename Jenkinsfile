@@ -68,16 +68,6 @@ pipeline {
                 echo 'Pushed image to Dockerhub'
             }
         }
-        stage('Update Helm Manifests of k8s') {
-            steps {
-                script {
-                    sh """
-                    yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\" | .chat-backend.image.tag = \"${env.IMAGE_TAG}\" ' -i k8s-helm/values.yaml
-                    """
-                    sh 'cat k8s-helm/values.yaml'
-                }
-            }
-        }
         stage('Push Helm Manifests of k8s on GitHub') {
             steps {
                 script {
@@ -88,6 +78,9 @@ pipeline {
                             git config user.name "ebad-arshad"
                             
                             cd k8s-helm
+                            
+                            yq eval '.chat-frontend.image.tag = \"${env.IMAGE_TAG}\" | .chat-backend.image.tag = \"${env.IMAGE_TAG}\" ' -i values.yaml
+                            cat values.yaml
 
                             git add values.yaml
                             if git diff --cached --quiet; then
