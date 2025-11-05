@@ -3,7 +3,6 @@ mongo:
     repository: mongo
     tag: "8"
   replicaCount: 1
-  revisionHistoryLimit: 1
   service:
     port: 27017
 chat-backend:
