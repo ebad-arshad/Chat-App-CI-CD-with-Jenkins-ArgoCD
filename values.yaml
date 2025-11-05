@@ -4,18 +4,16 @@ mongo:
     tag: "8"
   service:
     port: 27017
-
 chat-backend:
   image:
     repository: ebadarshad/chat-backend
-    tag: "latest"
+    tag: "0.15"
   service:
     port: 3000
-
 chat-frontend:
   image:
     repository: ebadarshad/chat-frontend
-    tag: "latest"
+    tag: "0.15"
   service:
     port: 80
     targetPort: 80
