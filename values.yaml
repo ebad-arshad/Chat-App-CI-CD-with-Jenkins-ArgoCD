@@ -8,14 +8,14 @@ mongo:
 chat-backend:
   image:
     repository: ebadarshad/chat-backend
-    tag: "0.16"
+    tag: "0.17"
   replicaCount: 2
   service:
     port: 3000
 chat-frontend:
   image:
     repository: ebadarshad/chat-frontend
-    tag: "0.16"
+    tag: "0.17"
   replicaCount: 2
   service:
     port: 80
